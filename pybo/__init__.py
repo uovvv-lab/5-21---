@@ -16,13 +16,14 @@ migrate.init_app(app,db)
 
 from . import models
 
-from .views import main_views,naver_views,question_views,answer_views,auth_views,movie_views
+from .views import main_views,naver_views,question_views,answer_views,auth_views,movie_views,chat_views
 app.register_blueprint(main_views.bp)
 app.register_blueprint(naver_views.bp)
 app.register_blueprint(question_views.bp)
 app.register_blueprint(answer_views.bp)
 app.register_blueprint(auth_views.bp)
 app.register_blueprint(movie_views.bp)
+app.register_blueprint(chat_views.bp)
 
 from .filter import format_datetime
 app.jinja_env.filters['datetime'] = format_datetime

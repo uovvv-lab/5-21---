@@ -1,9 +1,11 @@
-from flask import Blueprint,render_template,url_for
+from flask import Blueprint, render_template, url_for, request, jsonify
 from werkzeug.utils import redirect
 
 from pybo.models import Question,Answer
 from datetime import datetime
 from pybo import db
+from pybo.movieapi import Mrank
+from pybo.naverapi import navermovie
 
 
 bp = Blueprint('main', __name__, url_prefix='/')
@@ -62,3 +64,52 @@ def hello_pybo():
 @bp.route('/')
 def index():
     return redirect(url_for('question._list'))
+
+
+@bp.route('/webhook',methods=['GET','POST'])
+def webhook():
+    req = request.get_json()
+
+    if req['queryResult']['intent']['displayName'] =='movie ranking':
+        rankdata = Mrank()
+
+        result = ''
+        count = 1
+        for temp in rankdata:
+            result = result + str(count) + '위 : '+temp['title']
+            if count==3:
+                break
+            count += 1
+    elif req['queryResult']['intent']['displayName'] =='movie info - custom':
+        movieresult = navermovie(req['queryResult']['queryText'])
+        moviedata = movieresult['items'][0]
+
+
+        return movie_info(moviedata['image'],moviedata['title'],moviedata['link'],
+                          '감독:'+moviedata['director']+' 출연자'+moviedata['actor'])
+
+
+def movie_info(imgurl, title,link,subtitle):
+    response_json = jsonify(
+        fulfillment_text='영화정보',
+        fulfillment_messages=[
+            {
+                "payload": {
+                    "richContent": [[
+                        {
+                            "type": "image",
+                            "rawUrl": imgurl
+                        },
+                        {
+                            "type": "info",
+                            "title": title,
+                            "actionLink": link,
+                            "subtitle": subtitle
+                        }
+                    ]]
+                }
+            }
+        ]
+    )
+
+    return response_json

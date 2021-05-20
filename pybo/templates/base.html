@@ -28,6 +28,9 @@
             <li class="navbar-nav">
                 <a class="nav-link" href="{{ url_for('movie.Movierank')}}">영화순위</a>
             </li>
+            <li class="navbar-nav">
+                <a class="nav-link" href="{{ url_for('chat.Bot')}}">챗봇</a>
+            </li>
         </ul>
         {% else %}
         <ul class="navbar-nav">
@@ -36,6 +39,9 @@
             </li>
             <li class="navbar-nav">
                 <a class="nav-link" href="{{ url_for('movie.Movierank')}}">영화순위</a>
+            </li>
+            <li class="navbar-nav">
+                <a class="nav-link" href="{{ url_for('chat.Bot')}}">챗봇</a>
             </li>
             <li class="navbar-nav">
                 <a class="nav-link" href="{{ url_for('auth.signup') }}">계정생성</a>
@@ -47,6 +53,15 @@
         {% endif %}
     </div>
 </nav>
+
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="jarvis"
+  agent-id="c7616353-52af-480c-81b8-df07ad693b07"
+  language-code="ko"
+></df-messenger>
+
 {% block content %}
 {% endblock %}
 
