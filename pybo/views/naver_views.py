@@ -1,7 +1,14 @@
 from flask import Blueprint, render_template, url_for, request
 from werkzeug.utils import redirect
+
+from pybo.forms import NaverBookForm
 from pybo.naverapi import naverbook
-from ..forms import NaverBookForm
+#from ..forms import NaverBookForm
+import requests
+from bs4 import BeautifulSoup
+import os
+import sys
+import urllib.request
 
 bp = Blueprint('naver', __name__, url_prefix='/naver')
 
@@ -14,4 +21,3 @@ def Naverbook():
         return render_template('naver/naverbook.html', bookinfo_list=result['items'],form=form)
 
     return render_template('naver/naverbook.html',form=form)
-
