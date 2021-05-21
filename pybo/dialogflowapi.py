@@ -4,7 +4,7 @@ from google.api_core.exceptions import InvalidArgument
 from google.protobuf.json_format import MessageToJson
 import json
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]='key.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]=r'C:\Users\itcam\PycharmProjects\Myproject\pybo\key.json'
 
 DIALOGFLOW_PROJECT_ID='newagent-ooad'
 DIALOGFLOW_LANGUAGE_COOE='ko'
@@ -21,11 +21,10 @@ def chat(text, session_id='me'):
         raise
 
 
-    result= MessageToJson(response)
-    result=json.dumps(result,ensure_ascii=False)
 
-    print(json.loads(result))
-    return response.query_result.fulfillment_Text
+    result=json.loads(MessageToJson(response))
 
+    print(response)
+    return response.query_result.fulfillment_text
 chat('안녕', '12345')
 

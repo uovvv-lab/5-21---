@@ -26,4 +26,4 @@ def help():
 
 
 
-        return render_template('chat/help.html',form=form)
+    return render_template('chat/help.html',form=form)
