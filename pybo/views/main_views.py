@@ -70,7 +70,11 @@ def index():
 
 @bp.route('/webhook',methods=['GET','POST'])
 def webhook():
+    print('==============================================')
     req = request.get_json()
+    print(req['queryResult']['intent']['displayName'])
+    print('--------------------------------------------')
+
     if req['queryResult']['intent']['displayName'] =='movie ranking':
         rankdata = Mrank()
 
@@ -81,9 +85,16 @@ def webhook():
             if count==3:
                 break
             count += 1
+        response_json = jsonify(
+            fulfillment_text=result
+
+        )
+
+        return response_json
     elif req['queryResult']['intent']['displayName'] =='movie info - custom':
         movieresult = navermovie(req['queryResult']['queryText'])
         moviedata = movieresult['items'][0]
+
 
 
         return movie_info(moviedata['image'],moviedata['title'],moviedata['link'],
@@ -92,11 +103,11 @@ def webhook():
         wdata = get_wdata(req['queryResult']['queryText'])
         print(wdata)
         return weather_info(wdata)
-    elif req['queryResult']['intent']['displayName'] == 'product - custom':
+    elif req['queryResult']['intent']['displayName'] == 'shop - name':
         sdata = navershop(req['queryResult']['queryText'])
         return shop_infos(sdata['items'])
 
-
+    return '0'
 
 def movie_info(imgurl, title,link,subtitle):
     response_json = jsonify(
