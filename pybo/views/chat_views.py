@@ -23,6 +23,8 @@ def help():
         print(result)
         if result=='영화순위메뉴':
             return redirect(url_for('movie.Movierank'))
+        elif result =='구글가자':
+            return redirect('http://www.google.com')
 
 
 
